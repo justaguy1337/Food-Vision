@@ -14,7 +14,7 @@ st.set_page_config(page_title="Food Vision", page_icon="🍔")
 def load_model():
     # Load your model here
     return tf.keras.models.load_model(
-        r"/home/lol/food-vision-main/models/model.hdf5"
+        r"./models/model.hdf5"
     )
 
 
@@ -33,7 +33,7 @@ def predicting(image, model):
     df = pd.DataFrame({
         "Top 5 Predictions": labels,
         "F1 Scores": values,
-        'color': ['#EC5953'] * 5
+        'color': ['#EC5953'] *
     })
     df = df.sort_values('F1 Scores')
     return pred_class, pred_conf, df
