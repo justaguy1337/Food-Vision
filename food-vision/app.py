@@ -4,22 +4,8 @@ import pandas as pd
 import altair as alt
 from utils import load_and_prep, get_classes
 
-# Set page configuration
-st.set_page_config(page_title="Food Vision", page_icon="🍔")
-
-# Cache the model-loading function
-
-
-@st.cache_resource
-def load_model():
-    # Load your model here
-    return tf.keras.models.load_model(
-        r"./models/model.hdf5"
-    )
-
-
+@st.cache_data
 def predicting(image, model):
-    # Preprocess the image
     image = load_and_prep(image)
     image = tf.cast(tf.expand_dims(image, axis=0), tf.int16)
     preds = model.predict(image)
@@ -30,19 +16,18 @@ def predicting(image, model):
     labels = []
     for x in range(5):
         labels.append(class_names[top_5_i[x]])
-    df = pd.DataFrame({
-        "Top 5 Predictions": labels,
-        "F1 Scores": values,
-        'color': ['#EC5953'] *
-    })
+    df = pd.DataFrame({"Top 5 Predictions": labels,
+                       "F1 Scores": values,
+                       'color': ['#EC5953', '#EC5953', '#EC5953', '#EC5953', '#EC5953']})
     df = df.sort_values('F1 Scores')
     return pred_class, pred_conf, df
 
-
-# Get class names (defined in utils.py)
 class_names = get_classes()
 
-#### Sidebar ####
+st.set_page_config(page_title="Food Vision",
+                   page_icon="🍔")
+
+#### SideBar ####
 
 st.sidebar.title("What's Food Vision?")
 st.sidebar.write("""
@@ -52,24 +37,24 @@ It can identify over 100 different food classes.
 
 It is based upon a pre-trained Image Classification Model that comes with Keras and then retrained on the infamous **Food101 Dataset**.
 
-**Accuracy:** **`80%`**
+**Accuracy:** **`73%`**
 
 **Model:** **`EfficientNetB1`**
 
 **Dataset:** **`Food101`**
 """)
 
+
 #### Main Body ####
 
 st.title("Food Vision 🍔📷")
 st.header("Identify what's in your food photos!")
-
-# File uploader
 file = st.file_uploader(label="Upload an image of food.",
                         type=["jpg", "jpeg", "png"])
 
-# Load the model (cached)
-model = load_model()
+
+model = tf.keras.models.load_model("/home/lol/project/tensorflow/models/model.hdf5")
+
 
 if not file:
     st.warning("Please upload an image")
@@ -80,11 +65,9 @@ else:
     st.image(image, use_container_width=True)
     pred_button = st.button("Predict")
 
-
 if pred_button:
     pred_class, pred_conf, df = predicting(image, model)
-    st.success(
-        f'Prediction: {pred_class} \nConfidence: {pred_conf * 100:.2f}%')
+    st.success(f'Prediction : {pred_class} \nConfidence : {pred_conf*100:.2f}%')
     st.write(alt.Chart(df).mark_bar().encode(
         x='F1 Scores',
         y=alt.X('Top 5 Predictions', sort=None),
