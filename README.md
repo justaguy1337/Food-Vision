@@ -70,7 +70,8 @@ Use the trained model:
 - Model: EfficientNetB1
 - Dataset: Food-101
 - Achieved accuracy: 73%
-- Example predictions:
+
+Example predictions:
 
 Input Image | Predicted Class
 ------------|---------------
