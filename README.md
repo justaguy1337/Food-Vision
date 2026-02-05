@@ -17,7 +17,7 @@ This repository contains an end-to-end **Convolutional Neural Network (CNN)** pr
 
 1. Clone this repository:
 ```bash
-   git clone https://github.com/your-username/food-vision.git
+   git clone https://github.com/justaguy1337/food-vision.git
    cd food-vision
 ```
 
