@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import tensorflow as tf
 import pandas as pd
@@ -52,8 +53,9 @@ st.header("Identify what's in your food photos!")
 file = st.file_uploader(label="Upload an image of food.",
                         type=["jpg", "jpeg", "png"])
 
-
-model = tf.keras.models.load_model("/home/lol/project/tensorflow/models/model.hdf5")
+# Load model with path relative to this file's location
+model_path = os.path.join(os.path.dirname(__file__), "../models/model.hdf5")
+model = tf.keras.models.load_model(model_path)
 
 
 if not file:
