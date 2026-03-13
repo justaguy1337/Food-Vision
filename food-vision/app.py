@@ -67,12 +67,12 @@ else:
     st.image(image, use_container_width=True)
     pred_button = st.button("Predict")
 
-if pred_button:
-    pred_class, pred_conf, df = predicting(image, model)
-    st.success(f'Prediction : {pred_class} \nConfidence : {pred_conf*100:.2f}%')
-    st.write(alt.Chart(df).mark_bar().encode(
-        x='F1 Scores',
-        y=alt.X('Top 5 Predictions', sort=None),
-        color=alt.Color("color", scale=None),
-        text='F1 Scores'
-    ).properties(width=600, height=400))
+    if pred_button:
+        pred_class, pred_conf, df = predicting(image, model)
+        st.success(f'Prediction : {pred_class} \nConfidence : {pred_conf*100:.2f}%')
+        st.write(alt.Chart(df).mark_bar().encode(
+            x='F1 Scores',
+            y=alt.X('Top 5 Predictions', sort=None),
+            color=alt.Color("color", scale=None),
+            text='F1 Scores'
+        ).properties(width=600, height=400))
